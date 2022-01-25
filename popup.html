@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Fantom Gas Tracker</title>
+    <script src="popup.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <style>
+        body {
+            background-color: #0b2f83;
+            width: 512px;
+        }
+
+        .title {
+            color: #e5ecf3;
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .card {
+            /* Add shadows to create the "card" effect */
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+            color: rgb(114, 115, 119);
+            flex-basis: 33.3333%;
+            flex-grow: 0;
+            text-align: center;
+            border: 1px solid #285580;
+            border-radius: 0.5rem;
+            display: block;
+            margin: 5px;
+            transition: 0.3s;
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .card h3 {
+            font-size: 0.875rem;
+            font-weight: 700;
+            text-align: center;
+            text-size-adjust: 100%;
+            color: #e5ecf3;
+        }
+
+        .card h5 {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-align: center;
+            text-size-adjust: 100%;
+            color: #a8bcdb;
+        }
+
+        .card div {
+            font-size: 1.3125rem;
+            font-weight: 400;
+            text-align: center;
+            text-size-adjust: 100%;
+        }
+
+        .card div.standard {
+            color: #00c9a7;
+        }
+
+        .card div.fast {
+            color: #337afe;
+        }
+
+        .card div.rapid {
+            color: rgb(165, 42, 42);
+        }
+
+        /* Add some padding inside the card container */
+        .container {
+            padding: 2px 16px;
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            border: 1px solid #009879;
+            border-radius: 0.5rem;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header-left {}
+
+        .header img {
+            width: 64px;
+            height: 64px;
+        }
+
+        .header .ftm-price {
+            border: 1px solid #009879;
+            border-radius: 0.5rem;
+            color: #e5ecf3;
+            background-color: #285580;
+            margin-top: auto;
+            margin-bottom: auto;
+            padding: 10px;
+            font-family: Roboto, Helvetica, Arial, sans-serif;
+
+        }
+
+        .footer {
+            /* display: flex; */
+            /* justify-content: space-between; */
+            margin-top: 0.5rem;
+            color: #e5ecf3;
+
+        }
+
+        label {
+            display: block;
+            width: 16px;
+            height: 16px;
+            background-color: #009879;
+        }
+
+        #chkbox:checked+label #qr {
+            width: auto;
+            height: auto;
+
+        }
+
+        #chkbox:checked+label  {
+            width: auto;
+            height: auto;
+
+        }
+
+        #qr {
+            width: 16px;
+        }
+
+        #chkbox {
+            visibility: hidden;
+        }
+
+        .copy {
+            color: #e5ecf3;
+            font-size: larger;
+        }
+
+/* spinner */
+.lds-facebook {
+  display: inline-block;
+  position: relative;
+  width: 20px;
+  height: 20px;
+}
+.lds-facebook div {
+  display: inline-block;
+  position: absolute;
+  left: 2px;
+  width: 4px;
+  background: #cef;
+  animation: lds-facebook 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+}
+.lds-facebook div:nth-child(1) {
+  left: 2px;
+  animation-delay: -0.24s;
+}
+.lds-facebook div:nth-child(2) {
+  left: 8px;
+  animation-delay: -0.12s;
+}
+.lds-facebook div:nth-child(3) {
+  left: 14px;
+  animation-delay: 0;
+}
+@keyframes lds-facebook {
+  0% {
+    top: 2px;
+    height: 16px;
+  }
+  50%, 100% {
+    top: 6px;
+    height: 8px;
+  }
+}
+
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <img src="icons/fantom_logo.png"></image>
+        <h1 class="title">Fantom Gas Tracker</h1>
+        <div class="ftm-price">FTM: <span id="fantom-price">
+            <div class="lds-facebook"><div></div><div></div><div></div></div>
+        </span></div>
+    </div>
+
+
+    <div class="row">
+        <div class="card">
+            <div class="container">
+                <h3><b>Standard</b></h3>
+                <div class="standard" id="fantom-standard">
+                    <div class="lds-facebook"><div></div><div></div><div></div></div>
+                </div>
+                <h5>(30-60 secs)</h5>
+            </div>
+        </div>
+        <div class="card">
+            <div class="container">
+                <h3><b>Fast</b></h3>
+                <div class="fast" id="fantom-fast">
+                    <div class="lds-facebook"><div></div><div></div><div></div></div>
+                </div>
+                <h5>(10-30 secs)</h5>
+            </div>
+        </div>
+        <div class="card">
+            <div class="container">
+                <h3><b>Rapid</b></h3>
+                <div class="rapid" id="fantom-rapid">
+                    <div class="lds-facebook"><div></div><div></div><div></div></div>
+                </div>
+                <h5>(5-10 secs)</h5>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <div><span class="copy">2022 <a link="https://twitter.com/vlbalko">vbalko</a></span></div>
+        <div>
+            <span style="display: flex;">You can tip me on this address <input type="checkbox" id="chkbox" /> <label
+                    for="chkbox"> <img id="qr" src="icons/wallet.png" /></label>
+                &nbsp; (click to see QR code)</span>
+        </div>
+    </div>
+
+</body>
+
+</html>
