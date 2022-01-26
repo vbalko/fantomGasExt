@@ -1,8 +1,23 @@
+
 document.addEventListener('DOMContentLoaded', function () {
+    const refreshButtonEl = document.querySelector('#refresh-button');
+    refreshButtonEl.addEventListener('click', () => {
+        console.log('klik');
+        // if (refreshButtonEl.getAttribute('data-content-loaded') === 'true') {
+            // console.log('klik2');
+        //   refreshButtonEl.setAttribute('data-content-loaded', 'false');
+          chrome.runtime.sendMessage({ action: 'refresh-data' });
+        // }
+      });
+
+    
     chrome.storage.local.get(['array'],(res) => {
         const newPrices = res.array;
         setGasPrices(newPrices);        
-    })
+    });
+
+    // setInterval(() => chrome.runtime.sendMessage({ action: 'refresh-data' }),5000);
+    chrome.runtime.sendMessage({ action: 'refresh-data' });
 });
 
 const handleMessagePrices = () => {
@@ -37,3 +52,6 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
         setGasPrices(newPrices);
     }
 })
+
+
+

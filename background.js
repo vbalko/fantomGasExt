@@ -1,26 +1,56 @@
-
 let timer;
 let reConnectTimes = 0;
 
 
 const showBadge = (price) => {
-    chrome.action.setBadgeText({text: price.toString()});
+    chrome.action.setBadgeText({
+        text: price.toString()
+    });
 }
 
 const onInstalled = () => {
+    // setInterval(() => fetchGasData,5000);
     periodFetchGas();
+    createAlarm();
+    onAlarm();
 }
 
 const onStartup = () => {
+    // setInterval(() => fetchGasData,5000);
     periodFetchGas();
 }
 
 const periodFetchGas = () => {
     getGas();
+    
+    
+}
+
+const createAlarm = () => {
+    console.log('createAlarm');
+    chrome.alarms.get('fetchFantomPrices', alarm => {
+        if (!alarm) {
+            chrome.alarms.create('fetchFantomPrices', {
+                periodInMinutes: 1,
+                when: Date.now()
+            });
+        }
+    })
+
+}
+
+const onAlarm = () => {
+    console.log('onAlarm outside');
+    chrome.alarms.onAlarm.addListener((alarm) => {
+        console.log('onAlarm',alarm);
+        getGas('Alarm');
+    })
 }
 
 chrome.runtime.onInstalled.addListener(onInstalled);
 chrome.runtime.onStartup.addListener(onStartup);
+
+onAlarm();
 
 const formatPrice = (price) => (price === null ? '...' : Math.trunc(price));
 
@@ -35,7 +65,7 @@ const saveToStorage = (gasPrice) => {
     chrome.storage.local.set({
         array: arr,
         timestamp: gasPrice.LastBlock
-    },() => {
+    }, () => {
         console.log(`ulozeno ${arr}`);
         // showPopupContent();
     })
@@ -67,39 +97,52 @@ const saveToStorage = (gasPrice) => {
 function fetchGasData() {
     clearTimeout(timer);
     fetch("https://gftm.blockscan.com/gasapi.ashx?apikey=key&method=gasoracle", {
-        method: "GET"
-    })
-    .then((res) => res.json())
-    .then((json) => {
-        console.dir(json);
-        reConnectTimes = 0;
-        timer = setTimeout(() => {
-            getGas();
-        },10000);
-        saveToStorage(json.result)
-        updateDOM(json.result);        
-    })
-    .catch((err) => {
-        //refresh 20 times
-        if (reConnectTimes < 20) { reConnectTimes++ };
-        timer = setTimeout(getGas, reConnectTimes < 20 ? 1000 : 10000);
-    })
+            method: "GET"
+        })
+        .then((res) => res.json())
+        .then((json) => {
+            saveToStorage(json.result)
+            updateBadge(json.result);
+            reConnectTimes = 0;
+            // timer = setTimeout(() => {
+            //     getGas();
+            // }, 5000);
+        })
+        .catch((err) => {
+            //refresh 20 times
+            if (reConnectTimes < 20) {
+                reConnectTimes++
+            };
+            timer = setTimeout(getGas, reConnectTimes < 20 ? 1000 : 10000);
+        })
 }
 
-function getGas() {
+function getGas(from = '') {
+    if (from) {
+        console.log('from: ',from);
+    }
+    
     fetchGasData();
 }
 
-function updateDOM (data) {
-    
+function updateBadge(data) {
+    chrome.action.setBadgeBackgroundColor({
+        color: '#ffffff'
+    });
     const formatted = {
-        standard: formatPrice(data.SafeGasPrice),
-        fast: formatPrice(data.ProposeGasPrice),
-        rapid: formatPrice(data.FastGasPrice)
+        standard: formatPrice(data.SafeGasPrice)
     }
-    // document.getElementById("fantom-standard").innerHTML = `${formatted.standard} Gwei`;
-    // document.getElementById("fantom-fast").innerHTML = `${formatted.fast} Gwei`;
-    // document.getElementById("fantom-rapid").innerHTML = `${formatted.rapid} Gwei`;
     showBadge(formatted.standard);
+    setTimeout(() => chrome.action.setBadgeBackgroundColor({
+        color: '#337afe'
+    }), 100);
 }
 
+chrome.runtime.onMessage.addListener(({
+    action,
+    ...data
+} = {}) => {
+    console.log('klik-back');
+    if (action === 'refresh-data') fetchGasData();
+    // if (action === 'update-badge-source') setStoredBadgeSource(data.badgeSource);
+});
