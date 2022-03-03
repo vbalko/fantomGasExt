@@ -3,7 +3,7 @@
   
     "name": "Fantom Gas Tracker",
     "description": "Gas tracker on fantom network",
-    "version": "0.1.0",
+    "version": "0.6.0",
   
     "action": {
      "default_title": "Fantom Gas Tracker",

@@ -198,3 +198,22 @@ label {
     cursor: pointer;
     outline: none;
 }
+
+.m3 {
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+}
+
+#gas_treshold {
+    border: 1px solid #009879;
+    color: #e5ecf3;
+    border-radius: .5rem;    
+    background-color: #0b2f83;
+    margin-left: 0.3rem;
+    margin-right: 0.3rem;
+    width: 4rem;
+}
+
+h1 {
+    margin-bottom: 0px;
+}

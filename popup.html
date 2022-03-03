@@ -7,17 +7,24 @@
     <title>Fantom Gas Tracker</title>
     <script src="popup.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
     <div class="header">
         <img src="icons/fantom_logo.png"></image>
-        <h1 class="title">Fantom Gas Tracker</h1>
-        
+        <span style="display: flex; flex-direction: column; justify-content: center;">
+            <h1 class="title">Fantom Gas Tracker</h1>
+            <div id="actualDate" style="color: #5e7fa0;"></div>
+        </span>
+
         <div class="ftm-price">FTM: <span id="fantom-price">
-            <div class="lds-facebook"><div></div><div></div><div></div></div>
-        </span></div>
+                <div class="lds-facebook">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </span></div>
     </div>
 
 
@@ -26,7 +33,11 @@
             <div class="container">
                 <h3><b>Standard</b></h3>
                 <div class="standard" id="fantom-standard">
-                    <div class="lds-facebook"><div></div><div></div><div></div></div>
+                    <div class="lds-facebook">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
                 <h5>(30-60 secs)</h5>
             </div>
@@ -35,7 +46,11 @@
             <div class="container">
                 <h3><b>Fast</b></h3>
                 <div class="fast" id="fantom-fast">
-                    <div class="lds-facebook"><div></div><div></div><div></div></div>
+                    <div class="lds-facebook">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
                 <h5>(10-30 secs)</h5>
             </div>
@@ -44,9 +59,26 @@
             <div class="container">
                 <h3><b>Rapid</b></h3>
                 <div class="rapid" id="fantom-rapid">
-                    <div class="lds-facebook"><div></div><div></div><div></div></div>
+                    <div class="lds-facebook">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
                 </div>
                 <h5>(5-10 secs)</h5>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="">
+            <div>
+                <span style="display: flex; color: #e5ecf3;" class="m3">
+                    <input type="checkbox" id="do_beep" />
+                    Beep when price is below
+                    <input class="input_gas" type="number" id="gas_treshold" min="1" />
+                    gwei
+                </span>
+
             </div>
         </div>
     </div>
